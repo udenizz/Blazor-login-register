@@ -1,0 +1,68 @@
+﻿@page "/register"
+@using BlazorLoginForm.Models
+@using BlazorLoginForm.Services
+@inject IAppService AppService
+@using System.Text.Json
+@using System.Text.Json.Serialization
+<h3>Üye Ol</h3>
+<EditForm Model="@registrationModel" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>İsim</label>
+        <input class="form-control" @bind-value="@registrationModel.fname" placeholder="İsminizi Giriniz" />
+        <ValidationMessage For="@(()=>registrationModel.fname)" />
+    </div>
+    <div class="form-group">
+        <label>Soyisim</label>
+        <input class="form-control" @bind-value="@registrationModel.lname" placeholder="Soyisminizi Giriniz" />
+        <ValidationMessage For="@(()=>registrationModel.lname)" />
+    </div>
+    <div class="form-group">
+        <label>E-posta adresi</label>
+        <input type="email" class="form-control" @bind-value="@registrationModel.email" placeholder="E-posta adresinizi girin" />
+        <ValidationMessage For="@(()=>registrationModel.email)" />
+    </div>
+    <div class="mt-2 form-group">
+        <label>Parola</label>
+        <input type="password" class="form-control" @bind-value="@registrationModel.password" placeholder="Parolanızı girin" />
+        <ValidationMessage For="@(()=>registrationModel.password)" />
+    </div>
+    <div class="form-group">
+        <label>Telefon Numarası</label>
+        <input type="phone" class="form-control" @bind-value="@registrationModel.number" placeholder="Telefon Numarası Giriniz" />
+        <ValidationMessage For="@(()=>registrationModel.number)" />
+    </div>
+    <div class="mt-2 text-end">
+        <NavLink class="nav-link" href="/">
+            <span>Hesabınız var mı?</span>
+        </NavLink>
+    </div>
+    <div class="text-center mt-2">
+
+        <button class="btn btn-primary" type="submit">
+            <span class="@_spinnerClass" role="status" aria-hidden="true"></span>
+            Üye Ol
+        </button>
+    </div>
+
+</EditForm>
+@code {
+    RegistrationModel registrationModel = new();
+    private string _spinnerClass = "";
+    private async void Submit()
+    {
+        _spinnerClass = "spinner-border spinner-border-sm";
+        var response =  await AppService.RegisterUser(registrationModel);
+        if (response.isSuccess)
+        {
+            await App.Current.MainPage.DisplayAlert("Success", "User Registered", "OK");
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("OOPS", "Wrong information","XD");
+        }
+        _spinnerClass = "";
+        this.StateHasChanged();
+    }
+
+}

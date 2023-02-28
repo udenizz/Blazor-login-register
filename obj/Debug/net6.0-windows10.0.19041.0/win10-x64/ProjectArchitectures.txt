@@ -1,0 +1,1 @@
+C:\Users\dursu\OneDrive\Masaüstü\umut.zorgul\exercises\BlazorLoginFormApp\BlazorLoginForm\BlazorLoginForm.csproj;x64

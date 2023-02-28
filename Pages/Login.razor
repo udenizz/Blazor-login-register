@@ -1,0 +1,43 @@
+﻿@page "/"
+@using BlazorLoginForm.Models
+@using BlazorLoginForm.Services
+@inject IAppService AppService
+<h3>Giriş Yap</h3>
+<EditForm Model ="@loginModel" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>E-posta adresi</label>
+        <input type="email" @bind-value="loginModel.email" class="form-control" placeholder="E-posta adresinizi girin" />
+        <ValidationMessage For="@(()=>loginModel.email)" />
+    </div>
+    <div class="mt-2 form-group">
+        <label>Parola</label>
+        <input type="password" @bind-value="loginModel.password" class="form-control" placeholder="Parolanızı girin" />
+        <ValidationMessage For="@(()=>loginModel.password)" />
+    </div>
+
+    <div class="mt-2 text-end">
+        <NavLink class="nav-link" href="register">
+            <span>Kayıt olmak için tıklayınız</span>
+        </NavLink>
+    </div>
+
+    <div class="text-center mt-2">
+        <button class="btn btn-primary" type="submit">
+            <span class="@_spinnerClass" role="status" aria-hidden="true"></span>
+            Giriş Yap
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    LoginModel loginModel = new();
+    private string _spinnerClass = "";
+    private async void Submit()
+    {
+        _spinnerClass = "spinner-border spinner-border-sm";
+        await Task.Delay(500);
+        _spinnerClass = "";
+        this.StateHasChanged();
+    }
+}
